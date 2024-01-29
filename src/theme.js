@@ -1,3 +1,4 @@
+const custom = require("./custom.json");
 const chroma = require("chroma-js");
 const { getColors } = require("./colors");
 
@@ -327,12 +328,115 @@ function getTheme({ theme, name }) {
       "welcomePage.buttonBackground"     : color.btn.bg,
       "welcomePage.buttonHoverBackground": color.btn.hoverBg,
     },
-    semanticHighlighting: true,
     tokenColors: [
       {
-        scope: ["comment", "punctuation.definition.comment", "string.comment"],
+        scope: [
+          "comment", 
+          "string.comment",
+          "punctuation.definition.comment", 
+        ],
         settings: {
-          foreground: lightDark(scale.gray[5], scale.gray[3])
+          fontStyle: "italic",
+          foreground: lightDark(alpha(custom.black, .2), scale.gray[3])
+        },
+      },
+      {
+        scope: [
+          "punctuation.definition",
+          "punctuation.section",
+          "punctuation.separator",
+        ],
+        settings: {
+          foreground: lightDark(alpha(custom.black, .3), scale.orange[2])
+        },
+      },
+      {
+        scope: [
+          "punctuation.definition.list",
+          "punctuation.parenthesis",
+        ],
+        settings: {
+          fontStyle: "",
+          foreground: lightDark(custom.red, scale.red[3])
+        },
+      },
+      {
+        scope: [
+          "keyword", 
+          "storage", 
+        ],
+        settings: {
+          fontStyle: "bold",
+          foreground: lightDark(custom.red, scale.red[3])
+        },
+      },
+      {
+        scope: [
+          "keyword.operator.assignment"
+        ],
+        settings: {
+          fontStyle: "",
+          foreground: lightDark(alpha(custom.red, .3), scale.red[3])
+        },
+      },
+      {
+        scope: [
+          "entity.name.type.class",
+        ],
+        settings: {
+          fontStyle: "bold",
+          foreground: lightDark(custom.yellow, scale.orange[2]),
+        },
+      },
+      {
+        scope: [
+          "entity.name.namespace",
+        ],
+        settings: {
+          fontStyle: "bold",
+          foreground: lightDark(custom.dark, scale.orange[2]),
+        },
+      },
+      {
+        scope: "entity.name.function",
+        settings: {
+          foreground: lightDark(custom.purple, scale.purple[2])
+        }
+      },
+      {
+        scope: "variable",
+        settings: {
+          foreground: lightDark(custom.gray, scale.orange[2]),
+        },
+      },
+      {
+        scope: [
+          "variable.parameter",
+        ],
+        settings: {
+          fontStyle: "italic",
+        },
+      },
+      {
+        scope: [
+          "constant",
+          "support.constant",
+          "entity.name.constant",
+          "variable.other.constant",
+          "variable.other.enummember",
+          "string",
+          "punctuation.definition.string",
+          "string punctuation.section.embedded source",
+          "variable.language",
+        ],
+        settings: {
+          foreground: lightDark(custom.sky, scale.blue[2])
+        },
+      },
+      {
+        scope: "support",
+        settings: {
+          foreground: lightDark(custom.green, scale.blue[2])
         },
       },
       {
@@ -342,19 +446,6 @@ function getTheme({ theme, name }) {
         ],
         settings: {
           foreground: lightDark(scale.red[5], scale.red[3])
-        },
-      },
-      {
-        scope: [
-          "constant",
-          "entity.name.constant",
-          "variable.other.constant",
-          "variable.other.enummember",
-          "variable.language",
-          "entity",
-        ],
-        settings: {
-          foreground: lightDark(scale.blue[6], scale.blue[2])
         },
       },
       {
@@ -369,11 +460,9 @@ function getTheme({ theme, name }) {
       },
       {
         scope: [
-          "variable.parameter.function",
           "meta.jsx.children",
           "meta.block",
           "meta.tag.attributes",
-          "entity.name.constant",
           "meta.object.member",
           "meta.embedded.expression"
         ],
@@ -381,31 +470,14 @@ function getTheme({ theme, name }) {
           foreground: color.fg.default,
         },
       },
+
       {
-        "scope": "entity.name.function",
-        "settings": {
-          foreground: lightDark(scale.purple[5], scale.purple[2])
-        }
-      },
-      {
-        "scope": [
+        scope: [
           "entity.name.tag",
           "support.class.component"
         ],
         settings: {
           foreground: lightDark(scale.green[6], scale.green[1])
-        },
-      },
-      {
-        scope: "keyword",
-        settings: {
-          foreground: lightDark(scale.red[5], scale.red[3])
-        },
-      },
-      {
-        scope: ["storage", "storage.type"],
-        settings: {
-          foreground: lightDark(scale.red[5], scale.red[3])
         },
       },
       {
@@ -419,36 +491,9 @@ function getTheme({ theme, name }) {
         },
       },
       {
-        scope: [
-          "string",
-          "string punctuation.section.embedded source",
-        ],
-        settings: {
-          foreground: lightDark(scale.blue[8], scale.blue[1])
-        },
-      },
-      {
-        scope: "support",
-        settings: {
-          foreground: lightDark(scale.blue[6], scale.blue[2])
-        },
-      },
-      {
         scope: "meta.property-name",
         settings: {
           foreground: lightDark(scale.blue[6], scale.blue[2])
-        },
-      },
-      {
-        scope: "variable",
-        settings: {
-          foreground: lightDark(scale.orange[6], scale.orange[2])
-        },
-      },
-      {
-        scope: "variable.other",
-        settings: {
-          foreground: color.fg.default,
         },
       },
       {
@@ -495,12 +540,6 @@ function getTheme({ theme, name }) {
         },
       },
       {
-        scope: "string variable",
-        settings: {
-          foreground: lightDark(scale.blue[6], scale.blue[2])
-        },
-      },
-      {
         scope: ["source.regexp", "string.regexp"],
         settings: {
           foreground: lightDark(scale.blue[8], scale.blue[1])
@@ -522,18 +561,6 @@ function getTheme({ theme, name }) {
         settings: {
           fontStyle: "bold",
           foreground: lightDark(scale.green[6], scale.green[1])
-        },
-      },
-      {
-        scope: "support.constant",
-        settings: {
-          foreground: lightDark(scale.blue[6], scale.blue[2])
-        },
-      },
-      {
-        scope: "support.variable",
-        settings: {
-          foreground: lightDark(scale.blue[6], scale.blue[2])
         },
       },
       {
@@ -693,6 +720,22 @@ function getTheme({ theme, name }) {
         },
       },
     ],
+    semanticHighlighting: true,
+    semanticTokenColors: {
+      "module.typeHint:python": {
+        foreground: alpha(custom.black, .3),
+        bold: false,
+        italic: true,
+      },
+      "class.typeHint:python": {
+        foreground: alpha(custom.yellow, .45),
+        bold: false,
+        italic: true,
+      },
+      "variable.builtin:python": {
+        foreground: custom.sky,
+      }
+    },
   };
 }
 
