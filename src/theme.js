@@ -426,7 +426,7 @@ function getTheme({ theme, name }) {
           "variable.other.enummember",
           "string",
           "punctuation.definition.string",
-          "string punctuation.section.embedded source",
+          "string punctuation.section.embedded source", // is this hierarchy specific?
           "variable.language",
         ],
         settings: {
