@@ -1,11 +1,11 @@
 {
   "name": "apple-jazz-theme",
   "displayName": "Apple Jazz",
-  "description": "GitHub cloned theme for VS Code",
-  "version": "0.0.1",
+  "description": "GitHub cloned theme",
+  "version": "0.1.0",
   "publisher": "Earendel",
   "license": "MIT",
-  "icon": "icon.png",
+  "icon": "./img/icon.png",
   "galleryBanner": {
     "color": "#1b1f23",
     "theme": "dark"
@@ -27,14 +27,9 @@
   "contributes": {
     "themes": [
       {
-        "label": "Apple Jazz",
+        "label": "A/J Light",
         "uiTheme": "vs",
-        "path": "./themes/light-default.json"
-      },
-      {
-        "label": "Apple Jazz High Contrast",
-        "uiTheme": "hc-light",
-        "path": "./themes/light-high-contrast.json"
+        "path": "./themes/light.json"
       }
     ]
   },
@@ -56,5 +51,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "yarn": "^1.22.22"
   }
 }
