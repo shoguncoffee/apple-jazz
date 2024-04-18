@@ -1,26 +1,23 @@
-const custom = require("./custom.json");
+const custom = require("./colors.json");
 const chroma = require("chroma-js");
 const { getColors } = require("./colors");
-
-// Choosing colors from primer/primitives
-// There are multiple ways to define what color is used:
 
 // 1. Global variable
 //    e.g. "textLink.foreground": color.fg.default,
 // 2. Color scale
 //    e.g. "textLink.foreground": scale.blue[5],
 // 3. Per theme. Useful when a certain theme needs an exception
-//    e.g. "textLink.foreground": themes({ light: scale.blue[5], light_high_contrast: scale.blue[5], light_colorblind: scale.blue[5], dark: scale.blue[2], dark_high_contrast: scale.blue[3], dark_colorblind: scale.blue[2], dark_dimmed: scale.blue[3] }),
+//    e.g. "textLink.foreground": themes({ light: scale.blue[5], light_high_contrast: scale.blue[5], dark: scale.blue[2], dark_high_contrast: scale.blue[3], dimmed: scale.blue[3] }),
 
 function getTheme({ theme, name }) {
 
-  const themes = (options) => options[theme]; // Usage: themes({ light: "lightblue", light_high_contrast: "lightblue", light_colorblind: "lightblue", dark: "darkblue", dark_high_contrast: "darkblue", dark_colorblind: "darkblue", dark_dimmed: "royalblue" })
+  const themes = (options) => options[theme]; // Usage: themes({ light: "lightblue", light_high_contrast: "lightblue", dark: "darkblue", dark_high_contrast: "darkblue", dimmed: "royalblue" })
   const rawColors = getColors(theme)
   const color = changeColorToHexAlphas(rawColors)
   const scale = color.scale; // Usage: scale.blue[6]
 
   const onlyDark = (color) => {
-    return themes({ dark: color, dark_high_contrast: color, dark_colorblind: color, dark_dimmed: color })
+    return themes({ dark: color, dark_high_contrast: color, dimmed: color })
   }
 
   const onlyHighContrast = (color) => {
@@ -32,7 +29,7 @@ function getTheme({ theme, name }) {
   }
 
   const lightDark = (light, dark) => {
-    return themes({ light: light, light_high_contrast: light, light_colorblind: light, dark: dark, dark_high_contrast: dark, dark_colorblind: dark, dark_dimmed: dark })
+    return themes({ light: light, light_high_contrast: light, dark: dark, dark_high_contrast: dark, dimmed: dark })
   }
 
   const alpha = (color, alpha) => {
@@ -195,8 +192,6 @@ function getTheme({ theme, name }) {
       "editorBracketMatch.border"             : alpha(scale.green[3], 0.6),
       // text selection for High Contrast themes
       "editor.selectionForeground"            : onlyHighContrast(color.fg.onEmphasis),
-      "editor.selectionBackground"            : onlyHighContrast(color.neutral.emphasisPlus),
-      "editor.inactiveSelectionBackground"    : onlyHighContrast(color.neutral.emphasis),
 
       "editorInlayHint.background": alpha(scale.gray[3], 0.2),
       "editorInlayHint.foreground": color.fg.muted,
@@ -332,32 +327,47 @@ function getTheme({ theme, name }) {
       {
         scope: [
           "comment", 
-          "string.comment",
-          "punctuation.definition.comment", 
         ],
         settings: {
           fontStyle: "italic",
-          foreground: lightDark(alpha(custom.black, .2), scale.gray[3])
+          foreground: lightDark(
+            alpha(custom.black, .175), 
+            alpha(custom.black, .175)
+          )
         },
       },
       {
         scope: [
-          "punctuation.definition",
-          "punctuation.section",
-          "punctuation.separator",
-        ],
-        settings: {
-          foreground: lightDark(alpha(custom.black, .3), scale.orange[2])
-        },
-      },
-      {
-        scope: [
-          "punctuation.definition.list",
-          "punctuation.parenthesis",
+          "punctuation",
+          "meta.brace",
+          "meta.function.parameters keyword.operator.python",
+          "meta.function-call keyword.operator.assignment",
         ],
         settings: {
           fontStyle: "",
-          foreground: lightDark(custom.red, scale.red[3])
+          foreground: lightDark(
+            alpha(custom.black, .225), 
+            alpha(custom.black, .225)
+          )
+        },
+      },
+      {
+        scope: [
+          "keyword.operator.assignment",
+          "punctuation.definition.string",
+          "punctuation.definition.string string.quoted",
+          "punctuation.definition.list",
+          "punctuation.parenthesis",
+          "punctuation.separator.slice",
+          "meta.array meta.brace.square",
+          "constant.character.format.placeholder",
+        ],
+        settings: {
+          fontStyle: "bold",
+          foreground: lightDark(
+            alpha(custom.black, .325), 
+            alpha(custom.black, .325)
+          )
         },
       },
       {
@@ -367,25 +377,45 @@ function getTheme({ theme, name }) {
         ],
         settings: {
           fontStyle: "bold",
-          foreground: lightDark(custom.red, scale.red[3])
+          foreground: lightDark(
+            custom.red, 
+            custom.red
+          )
         },
       },
-      {
-        scope: [
-          "keyword.operator.assignment"
-        ],
-        settings: {
-          fontStyle: "",
-          foreground: lightDark(alpha(custom.red, .3), scale.red[3])
-        },
-      },
+      // {
+      //   scope: [
+      //     "storage.type.function.arrow",
+      //     "keyword.operator.comparison",
+      //   ],
+      //   settings: {
+      //     fontStyle: "",
+      //   },
+      // },
       {
         scope: [
           "entity.name.type.class",
+          "support.type",
+          "support.class",
         ],
         settings: {
-          fontStyle: "bold",
-          foreground: lightDark(custom.yellow, scale.orange[2]),
+          foreground: lightDark(
+            custom.yellow, 
+            custom.yellow
+          ),
+        },
+      },
+      {
+        scope: [
+          "source", 
+          "entity.name.variable",
+          "variable.parameter",
+        ],
+        settings: {
+          foreground: lightDark(
+            custom.dark, 
+            custom.smoke
+          ),
         },
       },
       {
@@ -394,24 +424,40 @@ function getTheme({ theme, name }) {
         ],
         settings: {
           fontStyle: "bold",
-          foreground: lightDark(custom.dark, scale.orange[2]),
-        },
-      },
-      {
-        scope: "entity.name.function",
-        settings: {
-          foreground: lightDark(custom.purple, scale.purple[2])
-        }
-      },
-      {
-        scope: "variable",
-        settings: {
-          foreground: lightDark(custom.gray, scale.orange[2]),
+          foreground: lightDark(
+            custom.dark, 
+            custom.dark
+          ),
         },
       },
       {
         scope: [
+          "entity.name.function",
+          "support.function"
+        ],
+        settings: {
+          foreground: lightDark(
+            custom.purple, 
+            custom.purple
+          )
+        }
+      },      
+      {
+        scope: [
+          "meta.function entity.name.function",
+          "meta.function support.function",
+          "entity.name.type.class",
+        ],
+        settings: {
+          fontStyle: "bold",
+        }
+      },
+
+      {
+        scope: [
           "variable.parameter",
+          "meta.function.decorator",
+          "punctuation.definition.decorator",
         ],
         settings: {
           fontStyle: "italic",
@@ -419,24 +465,53 @@ function getTheme({ theme, name }) {
       },
       {
         scope: [
-          "constant",
-          "support.constant",
-          "entity.name.constant",
-          "variable.other.constant",
-          "variable.other.enummember",
-          "string",
-          "punctuation.definition.string",
-          "string punctuation.section.embedded source", // is this hierarchy specific?
-          "variable.language",
+          "variable.language.this",
+          "variable.language.special.self",
+          "variable.parameter.function.language.special.self",
         ],
         settings: {
-          foreground: lightDark(custom.sky, scale.blue[2])
+          fontStyle: "bold italic",
         },
       },
       {
-        scope: "support",
+        scope: [
+          "constant",
+          "support.constant",
+          "support.variable",
+          "entity.name.constant",
+          "variable.other.constant",
+          "variable.other.enummember",
+        ],
         settings: {
-          foreground: lightDark(custom.green, scale.blue[2])
+          foreground: lightDark(
+            custom.blue,
+            custom.blue
+          )
+        },
+      },
+      {
+        scope: [
+          "string",
+          "string.interpolated string.quoted",
+          "meta.object-literal.key",
+        ],
+        settings: {
+          foreground: lightDark(
+            custom.sky, 
+            custom.sky
+          )
+        },
+      },
+      {
+        scope: [
+          "support",
+          "meta.fstring string.quoted",
+        ],
+        settings: {
+          foreground: lightDark(
+            custom.green, 
+            custom.green
+          )
         },
       },
       {
@@ -445,17 +520,21 @@ function getTheme({ theme, name }) {
           "constant.character"
         ],
         settings: {
-          foreground: lightDark(scale.red[5], scale.red[3])
+          foreground: lightDark(
+            custom.red, 
+            custom.red
+          )
         },
       },
       {
         scope: [
-          "entity.name",
           "meta.export.default",
-          "meta.definition.variable"
         ],
         settings: {
-          foreground: lightDark(scale.orange[6], scale.orange[2])
+          foreground: lightDark(
+            scale.orange[6], 
+            scale.orange[2]
+          )
         },
       },
       {
@@ -470,21 +549,21 @@ function getTheme({ theme, name }) {
           foreground: color.fg.default,
         },
       },
-
       {
         scope: [
           "entity.name.tag",
-          "support.class.component"
         ],
         settings: {
-          foreground: lightDark(scale.green[6], scale.green[1])
+          foreground: lightDark(
+            scale.green[6], 
+            scale.green[1]
+          )
         },
       },
       {
         scope: [
           "storage.modifier.package",
           "storage.modifier.import",
-          "storage.type.java",
         ],
         settings: {
           foreground: color.fg.default,
@@ -493,7 +572,10 @@ function getTheme({ theme, name }) {
       {
         scope: "meta.property-name",
         settings: {
-          foreground: lightDark(scale.blue[6], scale.blue[2])
+          foreground: lightDark(
+            scale.blue[6], 
+            scale.blue[2]
+          )
         },
       },
       {
@@ -560,12 +642,6 @@ function getTheme({ theme, name }) {
         scope: "string.regexp constant.character.escape",
         settings: {
           fontStyle: "bold",
-          foreground: lightDark(scale.green[6], scale.green[1])
-        },
-      },
-      {
-        scope: "support.type.property-name.json",
-        settings: {
           foreground: lightDark(scale.green[6], scale.green[1])
         },
       },
@@ -714,7 +790,10 @@ function getTheme({ theme, name }) {
         },
       },
       {
-        scope: ["constant.other.reference.link", "string.other.link"],
+        scope: [
+          "constant.other.reference.link", 
+          "string.other.link"
+        ],
         settings: {
           foreground: lightDark(scale.blue[8], scale.blue[1]),
         },
@@ -722,34 +801,43 @@ function getTheme({ theme, name }) {
     ],
     semanticHighlighting: true,
     semanticTokenColors: {
-      "module.typeHint:python": {
-        foreground: alpha(custom.black, .3),
+      "module.typeHint": {
+        foreground: alpha(custom.black, .25),
+        bold: true,
+        italic: true,
+      },
+      "property.typeHint": {
+        foreground: alpha(custom.black, .25),
         bold: false,
         italic: true,
       },
-      "class.typeHint:python": {
-        foreground: alpha(custom.yellow, .45),
+      "class.typeHint": {
+        foreground: alpha(custom.yellow, .6),
         bold: false,
         italic: true,
       },
-      "variable.builtin:python": {
+      "variable.builtin": {
         foreground: custom.sky,
-      }
+      },
+      "class.builtin": {
+        bold: false,
+      },
+      "class.defaultLibrary": {
+        bold: false,
+      },
     },
   };
 }
-
-// Convert to hex
-// VS Code doesn't support other formats like hsl, rgba etc.
 
 function changeColorToHexAlphas(obj) {
   if (typeof obj === 'object') {
     for (var keys in obj) {
       if (typeof obj[keys] === 'object') {
         changeColorToHexAlphas(obj[keys])
-      } else {
+      } 
+      else {
         let keyValue = obj[keys]
-        if(chroma.valid(keyValue)){
+        if (chroma.valid(keyValue)) {
           obj[keys] = chroma(keyValue).hex();
         }
       }
